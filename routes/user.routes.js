@@ -28,7 +28,14 @@ module.exports = (server) => {
         }
     });
 
-    // Ta bort användare 
+    // Redigera användare per ID
+    server.route({
+        method: 'PUT',
+        path: '/users/{id}',
+        handler: userController.updateUser
+    });
+
+    // Ta bort användare per ID
     server.route({
         method: 'DELETE',
         path: '/users/{id}',
