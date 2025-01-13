@@ -3,7 +3,7 @@
 const Hapi = require('@hapi/hapi'); // Använd hapi
 const mongoose = require("mongoose"); // Inkludera mongoose
 require("dotenv").config(); // Använd dotenv för miljövariabler 
-// const auth = require('./auth'); // Importera autentiserings-fil
+const auth = require('./auth'); // Importera autentiserings-fil
 
 const init = async () => {
 
@@ -28,10 +28,10 @@ const init = async () => {
     });
 
     // Registrera autentisering 
-  //  await auth.register(server);
+    await auth.register(server);
 
     // Registrera routes 
-   // require('./routes/book.route')(server);
+    require('./routes/book.route')(server);
     require('./routes/user.routes')(server);
 
     // Starta servern 
@@ -46,4 +46,4 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
 });
 
-init();
+init(); // Starta server

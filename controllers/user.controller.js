@@ -1,7 +1,6 @@
 const User = require('../models/user.model'); // Inkludera user-model 
 const Jwt = require('@hapi/jwt'); // Inkludera hapi jtw-plugin 
 const bcrypt = require("bcrypt"); // Inkludera bcrypt
-require("dotenv").config(); // Inkludera dotenv
 
 // Hämta alla användare 
 exports.getAllUsers = async (request, h) => {
@@ -53,18 +52,6 @@ exports.createUser = async (request, h) => {
     }
 };
 
-// Redigera användare
-exports.updateUser = async (request, h) => {
-    try {
-        const updatedUser = await User.findByIdAndUpdate(request.params.id, request.payload, { new: true });
-        return h.response(updatedUser).code(200);
-        // Fånga upp fel
-    } catch (error) {
-        console.error("Något gick fel vid updpatering av användare: ", error);
-        return h.response(error).code(500);
-    }
-};
-
 // Ta bort användare 
 exports.deleteUser = async (request, h) => {
     try {
@@ -113,20 +100,11 @@ exports.loginUser = async (request, h) => {
 
 // Logga ut 
 exports.logoutUser = async (request, h) =>{
-    try {
-        // Nollställ cookie
-        h.unstate("jwt");
-
-        return h.response({ message: "Du har loggats ut." }).code(200);
-        // Fånga upp fel
-    } catch (error) {
-        console.error("Fel vid utloggning. ", error);
-        return h.response(error).code(500);
-    }
+        return h.response({ message: "Du har loggats ut." }).unstate("jwt");
 };
 
 // Generera JWT-token 
-const generateToken = (user) => {
+const generateToken = user => {
     const token = Jwt.token.generate(
         { user },
         { key: process.env.JWT_SECRET_KEY, algorithm: 'HS256' },

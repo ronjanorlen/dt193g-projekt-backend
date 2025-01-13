@@ -12,7 +12,6 @@ module.exports = {
                 name: "jwt",
                 password: process.env.COOKIE_PASSWORD, // Hemligt lösenord för att kryptera cookie 
                 isSecure: true, // HTTPS 
-                path: '/',
                 ttl: 24 * 60 * 60 * 1000, // Giltig i 24 timmar
                 isSameSite: "None",
                 clearInvalid: true,
@@ -43,12 +42,12 @@ module.exports = {
                         };
                         // Fånga upp fel vid verifiering 
                     } catch (err) {
-                        console.error("Fel vid verifiering av token: ", err);
+                        console.error("Fel vid verifiering av token: ", err.message);
                         return { isValid: false };
                     }
                     // Fånga upp fel vid validering
                 } catch (err) {
-                    console.error("Valideringsfel: ", err);
+                    console.error("Valideringsfel: ", err.message);
                     return { isValid: false };
                 }
             }
@@ -56,5 +55,5 @@ module.exports = {
 
         // Default-strategi = "session"
         server.auth.default("session");
-    }
+    },
 };

@@ -6,10 +6,7 @@ module.exports = (server) => {
         // Hämta alla användare 
         method: 'GET',
         path: '/users',
-        handler: userController.getAllUsers,
-        options: {
-            auth: false
-        }
+        handler: userController.getAllUsers
     });
     // Hämta användare per ID 
     server.route({
@@ -24,15 +21,8 @@ module.exports = (server) => {
         path: '/users',
         handler: userController.createUser,
         options: {
-            auth: false
-        }
-    });
-
-    // Redigera användare per ID
-    server.route({
-        method: 'PUT',
-        path: '/users/{id}',
-        handler: userController.updateUser
+            auth: false,
+        },
     });
 
     // Ta bort användare per ID
@@ -48,27 +38,15 @@ module.exports = (server) => {
         path: '/users/login',
         handler: userController.loginUser,
         options: {
-            auth: false,
-            validate: {
-                payload: Joi.object({
-                    email: Joi.string().min(1),
-                    password: Joi.string().min(1)
-                }),
-                failAction: (request, h, err) => {
-                    throw err;
-                }
-            }
-        }
+            auth: false
+        },
     });
 
     // Logga ut användare 
     server.route({
         method: 'GET',
         path: '/users/logout',
-        handler: userController.logoutUser,
-        options: {
-            auth: false
-        }
+        handler: userController.logoutUser
     });
 
 }
